@@ -1,0 +1,44 @@
+= form_with(model: [:admin, @product], local: true) do |form|
+  - if @product.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@product.errors.count, 'error')} prohibited this product from being saved:"
+      ul
+        - @product.errors.full_messages.each do |message|
+          li= message
+
+  .field
+    = form.label :name
+    = form.text_field :name
+
+  .field
+    = form.label :description
+    = form.text_area :description
+
+  .field
+    = form.label :active
+    = form.check_box :active
+
+  h3 Product Variants
+  = form.fields_for :product_variants do |variant_form|
+    .field
+      = variant_form.label :name
+      = variant_form.text_field :name
+
+    .field
+      = variant_form.label :description
+      = variant_form.text_area :description
+
+    .field
+      = variant_form.label :price
+      = variant_form.text_field :price
+
+    .field
+      = variant_form.label :stock
+      = variant_form.text_field :stock
+
+    .field
+      = variant_form.label :active
+      = variant_form.check_box :active
+
+  .actions
+    = form.submit

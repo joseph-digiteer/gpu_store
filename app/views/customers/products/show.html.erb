@@ -1,0 +1,21 @@
+<h1><%= @product.name %></h1>
+<p><%= @product.description %></p>
+
+<h2>Variants</h2>
+<div class="grid grid-cols-3 gap-4">
+  <% @variants.each do |variant| %>
+    <div class="bg-white shadow-md rounded-lg p-4">
+      <h3 class="text-lg font-bold"><%= variant.name %></h3>
+      <p><%= variant.description %></p>
+      <p><%= number_to_currency(variant.price) %></p>
+      <p>Stock: <%= variant.stock %></p>
+      <% if variant.stock > 0 %>
+        <%= link_to 'Add to Cart','#', class: 'btn btn-primary' %>
+      <% else %>
+        <p>Out of stock</p>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to 'Back to Products', customers_products_path, class: 'btn btn-secondary' %>

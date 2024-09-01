@@ -1,0 +1,13 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-4xl font-bold mb-4">Products</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% @products.each do |product| %>
+      <div class="border p-4 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold"><%= product.name %></h2>
+        <p><%= product.description %></p>
+        <p class="text-lg font-bold">$<%= product.price %></p>
+        <%= link_to 'View Details', customers_product_path(product), class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700' %>
+      </div>
+    <% end %>
+  </div>
+</div>

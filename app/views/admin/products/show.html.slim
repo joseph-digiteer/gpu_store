@@ -1,0 +1,24 @@
+h1= @product.name
+p= @product.description
+p= @product.active ? 'Active' : 'Inactive'
+
+h2 Product Variants
+table
+  thead
+    tr
+      th Name
+      th Description
+      th Price
+      th Stock
+      th Active
+  tbody
+    - @variants.each do |variant|
+      tr
+        td= variant.name
+        td= variant.description
+        td= number_to_currency(variant.price)
+        td= variant.stock
+        td= variant.active ? 'Yes' : 'No'
+
+= link_to 'Edit', edit_admin_product_path(@product), class: 'btn btn-warning'
+= link_to 'Back to Products', admin_products_path, class: 'btn btn-secondary'

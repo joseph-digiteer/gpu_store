@@ -1,0 +1,6 @@
+- products.each do |product|
+  .product-item.border.rounded.p-4.mb-4
+    h3.text-lg.font-bold= product.name
+    p= product.description
+    p Price: #{number_to_currency(product.product_variants.first.price, unit: "₱")}
+    p Stock: #{product.product_variants.first.stock}

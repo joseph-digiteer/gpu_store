@@ -1,0 +1,35 @@
+<%= form_with(model: customer, local: true) do |form| %>
+  <div class="mb-4">
+    <%= form.label :first_name, class: "block text-gray-700" %>
+    <%= form.text_field :first_name, class: "form-input mt-1 block w-full" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :last_name, class: "block text-gray-700" %>
+    <%= form.text_field :last_name, class: "form-input mt-1 block w-full" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :address, class: "block text-gray-700" %>
+    <%= form.text_field :address, class: "form-input mt-1 block w-full" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :phone_number, class: "block text-gray-700" %>
+    <%= form.text_field :phone_number, class: "form-input mt-1 block w-full" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :balance, class: "block text-gray-700" %>
+    <%= form.number_field :balance, step: "0.01", class: "form-input mt-1 block w-full" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :active, class: "block text-gray-700" %>
+    <%= form.check_box :active, class: "form-checkbox" %>
+  </div>
+
+  <div>
+    <%= form.submit "Save", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+  </div>
+<% end %>

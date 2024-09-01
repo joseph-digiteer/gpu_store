@@ -1,0 +1,19 @@
+h1.text-4xl.font-bold.mb-4.text-gray-800 Admin Products
+
+#product-filter
+  turbo-frame id="product-filter" 
+    h2.text-xl.font-semibold.mb-4 Filter by Series or Search
+    = form_with url: admin_products_path, method: :get, data: { turbo_frame: 'products-list' }, html: { data: { controller: 'filter' } } do |form|
+      label for="series-filter" Series:
+      select id="series-filter" name="series" class="border px-2 py-1 rounded" data-target="filter.seriesFilter"
+        option value="" Select Series
+        option value="40 Series" NVIDIA 40 Series
+        option value="30 Series" NVIDIA 30 Series
+        option value="6000 Series" AMD 6000 Series
+
+      label for="search-bar" Search:
+      input id="search-bar" name="q[name_or_description_cont]" type="text" placeholder="Search products..." class="border px-2 py-1 rounded" data-target="filter.searchBar"
+
+#products-list
+  turbo-frame id="products-list"
+    = render partial: 'products_list', locals: { products: @products }

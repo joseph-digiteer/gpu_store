@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  amount: 9.99
+  minimum_spend: 9.99
+  date_from: 2024-08-26 21:30:44
+  date_to: 2024-08-26 21:30:44
+
+two:
+  code: MyString
+  amount: 9.99
+  minimum_spend: 9.99
+  date_from: 2024-08-26 21:30:44
+  date_to: 2024-08-26 21:30:44
