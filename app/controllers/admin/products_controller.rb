@@ -13,6 +13,7 @@ class Admin::ProductsController < ApplicationController
 
   def new
     @product = Product.new
+    @product.product_variants.build # Initialize an empty variant for new products
   end
 
   def create
@@ -25,6 +26,8 @@ class Admin::ProductsController < ApplicationController
   end
 
   def edit
+    @product = Product.find(params[:id])
+    @product.product_variants.build if @product.product_variants.empty? # Build an empty variant if none exist
   end
 
   def update

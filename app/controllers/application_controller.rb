@@ -5,8 +5,6 @@ class ApplicationController < ActionController::Base
     if user_signed_in?
       @current_cart ||= Cart.find_by(user_id: current_user.id) || Cart.create(user_id: current_user.id)
     else
-      # Handle the case when there's no user signed in.
-      # You might want to return nil or an empty cart, depending on your needs.
       nil
     end
   end

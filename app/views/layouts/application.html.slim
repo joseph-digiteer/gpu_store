@@ -7,7 +7,7 @@ html
     = javascript_importmap_tags
     = stylesheet_link_tag "tailwind", "inter-font", data: { turbo_track: "reload" }
     = stylesheet_link_tag 'application', data: { turbo_track: "reload" }
-    /= javascript_include_tag 'application', data: { turbo_track: "reload" }, type: "module"
+    = javascript_include_tag 'application', data: { turbo_track: "reload" }, type: "module"
 
   body.font-sans.bg-gray-100
     nav.bg-gray-800.p-4
