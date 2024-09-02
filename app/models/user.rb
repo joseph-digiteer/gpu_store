@@ -1,6 +1,7 @@
 # app/models/user.rb
 class User < ApplicationRecord
   has_one :customer, dependent: :destroy
+  has_many :carts
   enum role: { customer: 0, admin: 1 }
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

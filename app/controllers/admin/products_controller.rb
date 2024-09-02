@@ -1,5 +1,6 @@
-class Customers::ProductsController < ApplicationController
+class Admin::ProductsController < ApplicationController
   include Pagy::Backend
+  before_action :set_product, only: %i[show edit update destroy]
 
   def index
     @q = Product.ransack(params[:q])
@@ -7,7 +8,6 @@ class Customers::ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find(params[:id])
     @variants = @product.product_variants.where(active: true)
   end
 
@@ -47,6 +47,6 @@ class Customers::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :active)
+    params.require(:product).permit(:name, :description, :active, product_variants_attributes: [:id, :name, :description, :price, :stock, :active, :_destroy])
   end
 end

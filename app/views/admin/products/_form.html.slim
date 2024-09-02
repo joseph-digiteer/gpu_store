@@ -6,18 +6,6 @@
         - @product.errors.full_messages.each do |message|
           li= message
 
-  .field
-    = form.label :name
-    = form.text_field :name
-
-  .field
-    = form.label :description
-    = form.text_area :description
-
-  .field
-    = form.label :active
-    = form.check_box :active
-
   h3 Product Variants
   = form.fields_for :product_variants do |variant_form|
     .field

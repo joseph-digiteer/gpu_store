@@ -1,5 +1,9 @@
 h1.text-4xl.font-bold.mb-4.text-gray-800 Admin Products
 
+
+.actions.mt-4
+      = link_to 'New Product', new_admin_product_path, class: 'btn btn-primary'
+
 #product-filter
   turbo-frame id="product-filter" 
     h2.text-xl.font-semibold.mb-4 Filter by Series or Search
@@ -17,3 +21,4 @@ h1.text-4xl.font-bold.mb-4.text-gray-800 Admin Products
 #products-list
   turbo-frame id="products-list"
     = render partial: 'products_list', locals: { products: @products }
+

@@ -13,15 +13,32 @@ html
     nav.bg-gray-800.p-4
       .container.mx-auto.flex.justify-between.items-center
         = link_to 'GPU Store', root_path, class: 'text-white text-lg font-bold'
-        .space-x-4
-          = link_to 'Home', root_path, class: 'text-white hover:underline'
-          = link_to 'Products', customers_products_path, class: 'text-white hover:underline'
-          = link_to 'Orders', customers_orders_path, class: 'text-white hover:underline'
-          - if user_signed_in?
-            = button_to 'Logout', destroy_user_session_path, method: :delete, class: 'text-white hover:underline'
-          - else
-            = link_to 'Login', new_user_session_path, class: 'text-white hover:underline'
-            = link_to 'Register', new_user_registration_path, class: 'text-white hover:underline'
+        
+        .flex-grow
+          .ml-auto.flex.items-center
+            = link_to 'Home', root_path, class: 'text-white px-4 hover:underline'
+            = link_to 'Products', admin_products_path, class: 'text-white px-4 hover:underline'
+            = link_to 'Orders', admin_orders_path, class: 'text-white px-4 hover:underline'
+            = link_to admin_cart_items_path, class: 'relative text-white px-4 hover:underline' do
+              i.fa.fa-shopping-cart
+              - if cart_items_count > 0
+                span.badge = cart_items_count
+
+        - if user_signed_in?
+          .ml-auto.flex.items-center
+            span.text-white.px-4
+              | Email: #{current_user.email} 
+              span.mr-2
+              | Role: #{current_user.role}
+            = link_to 'Logout', destroy_user_session_path, method: :delete, class: 'text-white hover:underline'
+        - else
+          .ml-auto.flex.items-center
+            = link_to 'Login', new_user_session_path, class: 'text-white px-4 hover:underline'
+            = link_to 'Register', new_user_registration_path, class: 'text-white px-4 hover:underline'
+
+    - flash.each do |key, value|
+      .flash-message class="flash-#{key}"
+        = value
 
     main.container.mx-auto.p-4
       = yield

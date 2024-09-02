@@ -4,3 +4,7 @@
     p= product.description
     p Price: #{number_to_currency(product.product_variants.first.price, unit: "₱")}
     p Stock: #{product.product_variants.first.stock}
+    // Actions for Edit and Delete
+    .actions.mt-2
+      = link_to 'Edit', edit_admin_product_path(product), class: 'btn btn-secondary'
+      = button_to 'Delete', admin_product_path(product), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
