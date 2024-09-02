@@ -40,6 +40,10 @@
       .field
         = variant_form.label :active
         = variant_form.check_box :active, checked: variant_form.object.active
+
+      .field
+        = variant_form.label :series
+        = variant_form.text_field :series, checked: variant_form.object.series
   - else
     p No variants available.
 
