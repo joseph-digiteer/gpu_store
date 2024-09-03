@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # Admin namespace
   namespace :admin do
     resources :products do
+      resources :variants, only: [:edit, :update, :destroy]
       resources :product_variants, only: [:index, :show, :new, :create, :edit, :update, :destroy]
     end
     resources :customers, only: [:index, :show, :edit, :update, :destroy]
@@ -16,12 +17,13 @@ Rails.application.routes.draw do
   # Customer namespace
   namespace :customers do
     resources :products, only: [:index, :show]
+    resources :cart_items, only: [:create, :update, :destroy]
     resource :cart, only: [:show]
-    resources :cart_items, only: [:index, :create, :update, :destroy]
     resources :orders, only: [:index, :show, :create]
     resources :order_items, only: [:index, :show, :create, :update, :destroy]
     
     # Custom route for adding items to the cart
+    get 'cart', to: 'carts#show'
     post 'add_to_cart', to: 'cart_items#create', as: 'add_to_cart'
   end
   

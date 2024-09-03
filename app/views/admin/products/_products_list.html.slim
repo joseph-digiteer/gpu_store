@@ -1,10 +1,27 @@
-- products.each do |product|
-  .product-item.border.rounded.p-4.mb-4
-    h3.text-lg.font-bold= product.name
-    p= product.description
-    p Price: #{number_to_currency(product.product_variants.first.price, unit: "₱")}
-    p Stock: #{product.product_variants.first.stock}
-    // Actions for Edit and Delete
-    .actions.mt-2
-      = link_to 'Edit', edit_admin_product_path(product), class: 'btn btn-secondary'
-      = button_to 'Delete', admin_product_path(product), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
+table.w-full.table-auto.bg-white.shadow-md.rounded-lg
+  thead.bg-gray-100
+    tr
+      th.px-6.py-3.text-left.text-gray-600.font-semibold Series Name
+      th.px-6.py-3.text-left.text-gray-600.font-semibold Actions
+
+  tbody
+    - products.each do |product|
+      - if product.name == "GTX"
+        tr.border-b.cursor-pointer
+          td.px-6.py-4
+            = link_to product.name, '#', class: 'text-blue-500 hover:underline', data: { action: 'click->product#toggleVariants', product_id: product.id }
+          td.px-6.py-4
+            = link_to 'Edit', edit_admin_product_path(product), class: 'bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600'
+            = link_to 'Delete', admin_product_path(product), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600'
+
+    #variants-container
+      - products.each do |product|
+        - if product.name == "GTX"
+          - product.product_variants.each do |variant|
+            #variant-#{variant.id}.hidden
+              tr.border-b
+                td.px-6.py-4 = variant.name
+                td.px-6.py-4 = variant.description
+                td.px-6.py-4
+                  = link_to 'Edit', edit_admin_product_variant_path(variant), class: 'bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600'
+                  = link_to 'Delete', admin_product_variant_path(variant), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600'

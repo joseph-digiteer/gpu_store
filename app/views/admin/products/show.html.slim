@@ -1,19 +1,23 @@
-h1.text-4xl.font-bold.mb-4.text-gray-800 = @product.name
+h1.text-4xl.font-bold.mb-4 = @product.name
 
-- if @variants.any?
-  - @variants.each do |variant|
-    h3 = variant.name
-    p = variant.description
-    p
-      | Price: 
-      = number_to_currency(variant.price)
-    p
-      | Stock: 
-      = variant.stock
-    p
-      = link_to 'Edit', edit_admin_product_path(variant), class: 'btn btn-primary'
-      = link_to 'Delete', admin_product_path(variant), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
+p.text-gray-600 = @product.description
+
+h2.text-2xl.font-semibold.mt-4 Variants
+
+- if @variants.present?
+  .grid.grid-cols-3.gap-4
+    - @variants.each do |variant|
+      .bg-white.shadow-md.rounded-lg.p-4
+        h3.text-lg.font-bold = variant.name
+        p = variant.description
+        p = number_to_currency(variant.price)
+        p Stock: = variant.stock
+
+        .flex.items-center.mt-4
+          = link_to 'Edit', edit_admin_product_variant_path(variant), class: 'bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 mr-2'
+          = link_to 'Delete', admin_product_variant_path(variant), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600'
+
 - else
   p No variants available.
 
-= link_to 'Back to Products', admin_products_path, class: 'btn btn-secondary'
+= link_to 'Back to Products', admin_products_path, class: 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'

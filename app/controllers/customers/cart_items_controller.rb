@@ -46,13 +46,13 @@ class Customers::CartItemsController < ApplicationController
   def destroy
     @cart = current_user.cart || current_user.create_cart
     cart_item = @cart.cart_items.find(params[:id])
-
+  
     if cart_item.destroy
       flash[:notice] = 'Cart item removed.'
     else
       flash[:alert] = 'Unable to remove cart item.'
     end
-
+  
     redirect_to customers_cart_path
   end
 
