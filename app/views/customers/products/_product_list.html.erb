@@ -1,17 +1,13 @@
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
+      <th>GPU SERIES</th>
     </tr>
   </thead>
   <tbody>
     <% products.each do |product| %>
       <tr>
         <td><%= link_to product.name, customers_product_path(product) %></td>
-        <td><%= product.description %></td>
-        <td><%= number_to_currency(product.product_variants[0].price) %></td>
       </tr>
     <% end %>
   </tbody>

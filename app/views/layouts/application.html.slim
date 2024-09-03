@@ -7,7 +7,10 @@ html
     = javascript_importmap_tags
     = stylesheet_link_tag "tailwind", "inter-font", data: { turbo_track: "reload" }
     = stylesheet_link_tag 'application', data: { turbo_track: "reload" }
-    // comment below this.
+
+    // Add Font Awesome CDN link
+    link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+
     = javascript_include_tag 'application', data: { turbo_track: "reload" }, type: "module"
 
   body.font-sans.bg-gray-100
@@ -24,10 +27,11 @@ html
               = link_to 'Products', customers_products_path, class: 'text-white px-4 hover:underline'
               = link_to 'Orders', customers_orders_path, class: 'text-white px-4 hover:underline'
             
-            = link_to customers_cart_path, class: 'relative text-white px-4 hover:underline' do
-              i.fa.fa-shopping-cart
-              - if cart_items_count > 0
-                span.badge = cart_items_count
+            - if user_signed_in?
+              = link_to customers_cart_path, class: 'relative text-white px-4 hover:underline' do
+                i.fa.fa-shopping-cart
+                - if cart_items_count > 0
+                  span.badge = cart_items_count
 
         - if user_signed_in?
           .ml-auto.flex.items-center

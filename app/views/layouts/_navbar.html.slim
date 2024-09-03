@@ -3,6 +3,21 @@ nav.bg-gray-800.p-4
     = link_to "GpuStore", root_path, class: "text-white text-xl font-bold"
     div
     .ml-auto.flex.items-center
-      = link_to "Products", products_path, class: "text-white px-4 hover:bg-gray-700 rounded"
-      = link_to "Orders", orders_path, class: "text-white px-4 hover:bg-gray-700 rounded"
-      = link_to "Customers", customers_path, class: "text-white px-4 hover:bg-gray-700 rounded"
+      - if current_user.admin?
+        = link_to "Products", admin_products_path, class: "text-white px-4 hover:bg-gray-700 rounded"
+        = link_to "Orders", admin_orders_path, class: "text-white px-4 hover:bg-gray-700 rounded"
+        = link_to "Customers", admin_customers_path, class: "text-white px-4 hover:bg-gray-700 rounded"
+      - else
+        = link_to "Products", products_path, class: "text-white px-4 hover:bg-gray-700 rounded"
+        = link_to "Orders", customer_orders_path, class: "text-white px-4 hover:bg-gray-700 rounded"
+        = link_to "Cart", customer_cart_path, class: "text-white px-4 hover:bg-gray-700 rounded"
+
+      - if user_signed_in?
+        span.text-white.px-4
+          | Email: #{current_user.email} 
+          span.mr-2
+          | Role: #{current_user.role}
+        = button_to 'Logout', destroy_user_session_path, method: :delete, class: 'text-white hover:underline'
+      - else
+        = link_to 'Login', new_user_session_path, class: 'text-white px-4 hover:bg-gray-700 rounded'
+        = link_to 'Register', new_user_registration_path, class: 'text-white px-4 hover:bg-gray-700 rounded'

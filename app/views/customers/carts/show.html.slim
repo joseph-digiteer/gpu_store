@@ -1,6 +1,29 @@
-h1 Your Cart
+/ app/views/customers/carts/show.html.slim
 
-- if @cart_item_count > 0
-  p You have #{@cart_item_count} items in your cart.
-- else
-  p Your cart is empty.
+.container.mx-auto.p-4
+  h1.text-2xl.font-semibold.mb-4 Cart Items
+
+  - if @cart.cart_items.any?
+    .overflow-x-auto
+      table.w-full.table-auto.bg-white.shadow-md.rounded-lg
+        thead.bg-gray-100
+          tr
+            th.p-3.border-b.border-gray-200.text-left Item
+            th.p-3.border-b.border-gray-200.text-left Quantity
+            th.p-3.border-b.border-gray-200.text-left Actions
+
+        tbody
+          - @cart.cart_items.each do |cart_item|
+            tr
+              td.p-3.border-b.border-gray-200.text-center
+                = cart_item.product_variant.name
+              td.p-3.border-b.border-gray-200.text-center
+                = form_with url: customers_cart_item_path(cart_item), method: :put, local: true do |f|
+                    = f.number_field :quantity, value: cart_item.quantity, min: 1, class: 'border rounded p-2 w-20 text-center'
+              td.p-3.border-b.border-gray-200.text-center
+                = form_with url: customers_cart_item_path(cart_item), method: :put, local: true do |f|
+                  = f.submit 'Update', class: 'bg-blue-500 text-white p-2 rounded hover:bg-blue-600'
+                = form_with url: customers_cart_item_path(cart_item), method: :delete, local: true do |f|
+                  = f.submit 'Remove', class: 'bg-red-500 text-white p-2 rounded hover:bg-red-600'
+  - else
+    p.text-gray-500 Your cart is empty.

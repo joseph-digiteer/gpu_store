@@ -1,24 +1,38 @@
-h1.text-4xl.font-bold.mb-4.text-gray-800 Admin Products
+h1.text-4xl.font-bold.mb-4 Product Series
 
+= link_to 'Create New Product', new_admin_product_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4'
 
-.actions.mt-4
-      = link_to 'New Product', new_admin_product_path, class: 'btn btn-primary'
+= turbo_frame_tag "products_search" do
+  = form_with url: admin_products_path, method: :get, local: true, data: { turbo_frame: "products_search" } do |form|
+    .flex.items-center.mb-4
+      = form.label :search, "Search", class: 'block text-sm font-medium text-gray-700 mr-2'
+      = form.text_field :search, value: params[:search], placeholder: "Search for products", class: 'border border-gray-300 rounded-lg px-4 py-2 w-full'
+      = form.submit 'Search', class: 'ml-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'
 
-#product-filter
-  turbo-frame id="product-filter" 
-    h2.text-xl.font-semibold.mb-4 Filter by Series or Search
-    = form_with url: admin_products_path, method: :get, data: { turbo_frame: 'products-list' }, html: { data: { controller: 'filter' } } do |form|
-      label for="series-filter" Series:
-      select id="series-filter" name="series" class="border px-2 py-1 rounded" data-target="filter.seriesFilter"
-        option value="" Select Series
-        option value="40 Series" NVIDIA 40 Series
-        option value="30 Series" NVIDIA 30 Series
-        option value="6000 Series" AMD 6000 Series
+.table-auto.w-full.bg-white.shadow-md.rounded-lg
+  thead.bg-gray-100
+    tr
+      th.px-6.py-3.text-left.text-gray-600.font-semibold Series Name
+      th.px-6.py-3.text-left.text-gray-600.font-semibold Actions
 
-      label for="search-bar" Search:
-      input id="search-bar" name="q[name_or_description_cont]" type="text" placeholder="Search products..." class="border px-2 py-1 rounded" data-target="filter.searchBar"
+  tbody
+    - @product_series.each do |product|
+      - if product.name == "GTX"
+        tr.border-b.cursor-pointer
+          td.px-6.py-4
+            = link_to product.name, '#', class: 'text-blue-500 hover:underline', data: { action: 'click->product#toggleVariants', product_id: product.id }
+          td.px-6.py-4
+            = link_to 'Edit', edit_admin_product_path(product), class: 'bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600'
+            = link_to 'Delete', admin_product_path(product), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600'
 
-#products-list
-  turbo-frame id="products-list"
-    = render partial: 'products_list', locals: { products: @products }
-
+    #variants-container
+      - @product_series.each do |product|
+        - if product.name == "GTX"
+          - product.product_variants.each do |variant|
+            #variant-#{variant.id}.hidden
+              tr.border-b
+                td.px-6.py-4 = variant.name
+                td.px-6.py-4 = variant.description
+                td.px-6.py-4
+                  = link_to 'Edit', edit_admin_product_variant_path(variant), class: 'bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600'
+                  = link_to 'Delete', admin_product_variant_path(variant), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600'

@@ -7,11 +7,11 @@
           li= message
 
   .field
-    = form.label :name
+    = form.label :name, "Series Name"
     = form.text_field :name
 
   .field
-    = form.label :description
+    = form.label :description, "Series Description"
     = form.text_area :description
 
   .field
@@ -19,33 +19,26 @@
     = form.check_box :active
 
   h3 Product Variants
-  - if @product.product_variants.any?
-    = form.fields_for :product_variants do |variant_form|
-      .field
-        = variant_form.label :name
-        = variant_form.text_field :name, value: variant_form.object.name
+  = form.fields_for :product_variants do |variant_form|
+    .field
+      = variant_form.label :name, "Variant Name"
+      = variant_form.text_field :name, value: variant_form.object.name
 
-      .field
-        = variant_form.label :description
-        = variant_form.text_area :description, value: variant_form.object.description
+    .field
+      = variant_form.label :description, "Variant Description"
+      = variant_form.text_area :description, value: variant_form.object.description
 
-      .field
-        = variant_form.label :price
-        = variant_form.text_field :price, value: variant_form.object.price
+    .field
+      = variant_form.label :price, "Variant Price"
+      = variant_form.text_field :price, value: variant_form.object.price
 
-      .field
-        = variant_form.label :stock
-        = variant_form.text_field :stock, value: variant_form.object.stock
+    .field
+      = variant_form.label :stock, "Variant Stock"
+      = variant_form.text_field :stock, value: variant_form.object.stock
 
-      .field
-        = variant_form.label :active
-        = variant_form.check_box :active, checked: variant_form.object.active
-
-      .field
-        = variant_form.label :series
-        = variant_form.text_field :series, checked: variant_form.object.series
-  - else
-    p No variants available.
+    .field
+      = variant_form.label :active
+      = variant_form.check_box :active, checked: variant_form.object.active
 
   .actions
-    = form.submit 'Update Product'
+    = form.submit 'Create Product Series'

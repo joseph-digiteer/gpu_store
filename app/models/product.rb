@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
-  has_many :product_variants, dependent: :destroy
+  validates :name, presence: true, uniqueness: true
+  has_many :product_variants
   accepts_nested_attributes_for :product_variants, allow_destroy: true
 
   # Allow list attributes that can be searched using Ransack

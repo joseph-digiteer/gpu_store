@@ -3,36 +3,37 @@ class Admin::ProductsController < ApplicationController
   before_action :set_product, only: %i[show edit update destroy]
 
   def index
-    @q = Product.ransack(params[:q])
-    @pagy, @products = pagy(@q.result(distinct: true).where(active: true), items: 15)
-  end
+    @product_series = Product.all
 
+    if params[:search].present?
+      @product_series = @product_series.where('name ILIKE ?', "%#{params[:search]}%")
+    end
+  end
+  
   def show
     @variants = @product.product_variants.where(active: true)
   end
 
   def new
     @product = Product.new
-    @product.product_variants.build # Initialize an empty variant for new products
+    @product.product_variants.build
   end
 
   def create
     @product = Product.new(product_params)
     if @product.save
-      redirect_to admin_product_path(@product), notice: 'Product was successfully created.'
+      redirect_to admin_product_path(@product), notice: 'Product series was successfully created.'
     else
       render :new
     end
   end
 
   def edit
-    @product = Product.find(params[:id])
-    @product.product_variants.build if @product.product_variants.empty? # Build an empty variant if none exist
   end
 
   def update
     if @product.update(product_params)
-      redirect_to admin_product_path(@product), notice: 'Product was successfully updated.'
+      redirect_to admin_product_path(@product), notice: 'Product series was successfully updated.'
     else
       render :edit
     end
@@ -40,7 +41,7 @@ class Admin::ProductsController < ApplicationController
 
   def destroy
     @product.destroy
-    redirect_to admin_products_url, notice: 'Product was successfully destroyed.'
+    redirect_to admin_products_url, notice: 'Product series was successfully destroyed.'
   end
 
   private

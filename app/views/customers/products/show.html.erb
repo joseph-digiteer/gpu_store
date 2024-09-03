@@ -10,7 +10,14 @@
       <p><%= number_to_currency(variant.price) %></p>
       <p>Stock: <%= variant.stock %></p>
       <% if variant.stock > 0 %>
-        <%= link_to 'Add to Cart','#', class: 'btn btn-primary' %>
+        <%= form_with url: customers_add_to_cart_path, method: :post, local: true do |f| %>
+          <%= hidden_field_tag :product_variant_id, variant.id %>
+          <div class="flex items-center">
+            <%= label_tag :quantity, "Quantity:" %>
+            <%= number_field_tag :quantity, 1, min: 1, max: variant.stock, class: "ml-2 border rounded p-1" %>
+            <%= submit_tag 'Add to Cart', class: 'ml-4 btn btn-primary' %>
+          </div>
+        <% end %>
       <% else %>
         <p>Out of stock</p>
       <% end %>
