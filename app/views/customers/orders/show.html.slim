@@ -1,0 +1,47 @@
+.container.mx-auto.p-4
+  h1.text-4xl.font-bold.mb-4 Order Details
+
+  p.font-semibold.text-lg
+    | Order ID: 
+    = @order.id
+
+  p.font-semibold.text-lg
+    | Total Amount: 
+    = number_to_currency(@order.total_amount)
+
+  p.font-semibold.text-lg
+    | Voucher: 
+    = @order.voucher.present? ? @order.voucher.code : 'None'
+
+  p.font-semibold.text-lg
+    | Voucher Amount: 
+    = @order.voucher.present? ? number_to_currency(@order.voucher.amount) : '0.00'
+
+  p.font-semibold.text-lg
+    | Your Balance: 
+    = number_to_currency(@customer.balance)
+  
+  p.font-semibold.text-lg
+    | Status: 
+    = @order.status.humanize
+
+  = link_to 'Back to List', customers_orders_path, class: 'btn btn-secondary'
+
+
+  h2.text-2xl.font-semibold.mt-4 Order Items
+  table.min-w-full.bg-white.border.border-gray-200
+    thead
+      tr
+        th.py-2.px-4.border-b Product
+        th.py-2.px-4.border-b Quantity
+        th.py-2.px-4.border-b Price
+        th.py-2.px-4.border-b Total
+    tbody
+      - @order.order_items.each do |item|
+        tr
+          td.py-2.px-4.border-b = item.product_variant.name
+          td.py-2.px-4.border-b = item.quantity
+          td.py-2.px-4.border-b = number_to_currency(item.product_variant.price)
+          td.py-2.px-4.border-b = number_to_currency(item.product_variant.price * item.quantity)
+
+= link_to 'Back to Orders', customers_orders_path, class: 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mt-4'

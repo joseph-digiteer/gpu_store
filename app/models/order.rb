@@ -3,5 +3,8 @@ class Order < ApplicationRecord
   belongs_to :voucher, optional: true
   has_many :order_items, dependent: :destroy
 
-  enum status: { paid: 0, delivered: 1, in_transit: 2 }
+  enum status: { pending: 0, completed: 1, canceled: 2 }
+
+  validates :total_amount, presence: true
+  validates :status, presence: true
 end

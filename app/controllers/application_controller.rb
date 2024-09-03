@@ -2,8 +2,18 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   helper_method :current_cart
 
-  private
+  def authenticate_customer!
+    if current_user.customer.nil?
+      redirect_to new_user_session_path, alert: "You need to sign in as a customer to access this page."
+    end
+  end
 
+  def current_customer
+    current_user.customer if current_user
+  end
+
+  private
+  
   def authenticate_admin!
     authenticate_user!
     redirect_to root_path, alert: 'Access denied.' unless current_user.admin?

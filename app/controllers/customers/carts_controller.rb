@@ -29,9 +29,78 @@ class Customers::CartsController < ApplicationController
     redirect_to customers_cart_path
   end
 
+  def checkout
+    # Find the customer associated with the current user
+    customer = current_user.customer
+  
+    # Check if a voucher code was provided and find the corresponding voucher
+    voucher = Voucher.find_by(code: params[:voucher_code]) if params[:voucher_code].present?
+  
+    # Calculate the total amount and ensure the customer has sufficient balance
+    total_amount = @cart.total_amount
+  
+    # Apply voucher discount if valid
+    if voucher && total_amount >= voucher.minimum_spend
+      discount_amount = voucher.amount
+      total_amount -= discount_amount
+    else
+      discount_amount = 0
+    end
+  
+    if customer.balance < total_amount
+      # Handle insufficient balance
+      redirect_to customers_cart_path, alert: 'Insufficient balance for checkout.'
+      return
+    end
+  
+    # Create an order with the current cart
+    order_params = {
+      customer_id: customer.id,
+      total_amount: total_amount,
+      status: :pending, # Ensure this is a valid status
+      voucher_id: voucher&.id # Set to nil if voucher is not present
+    }
+  
+    @order = Order.new(order_params)
+  
+    if @order.save
+      # Deduct the balance
+      customer.update(balance: customer.balance - total_amount)
+  
+      # Process the order and clear the cart
+      @cart.cart_items.each do |item|
+        # Create order items
+        @order.order_items.create!(
+          product_variant_id: item.product_variant_id,
+          quantity: item.quantity
+        )
+        
+        # Find the product variant and deduct stock
+        product_variant = item.product_variant
+        if product_variant.stock >= item.quantity
+          product_variant.update(stock: product_variant.stock - item.quantity)
+        else
+          # Handle insufficient stock, possibly rollback
+          # Here, you might want to add a mechanism to handle stock discrepancies
+          redirect_to customers_cart_path, alert: 'Insufficient stock for one or more items.'
+          return
+        end
+      end
+  
+      @cart.cart_items.destroy_all
+  
+      # Redirect or render success message
+      redirect_to customers_order_path(@order), notice: 'Order successfully created.'
+    else
+      # Handle the error case
+      render :show, alert: 'There was an issue with your checkout.'
+    end
+  end
+  
+
   private
 
   def set_cart
-    @cart = current_user.cart || current_user.create_cart
+    @cart = current_user.cart 
   end
 end

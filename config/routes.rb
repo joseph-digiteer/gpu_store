@@ -18,7 +18,9 @@ Rails.application.routes.draw do
   namespace :customers do
     resources :products, only: [:index, :show]
     resources :cart_items, only: [:create, :update, :destroy]
-    resource :cart, only: [:show]
+    resource :cart, only: [:show, :update, :destroy] do
+      post 'checkout', on: :member
+    end
     resources :orders, only: [:index, :show, :create]
     resources :order_items, only: [:index, :show, :create, :update, :destroy]
     

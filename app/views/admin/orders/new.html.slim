@@ -1,0 +1,18 @@
+.container.mx-auto.p-4
+  h1.text-4xl.font-bold.mb-4 New Order
+  = form_with model: @order, url: admin_orders_path, local: true do |f|
+    .mb-4
+      = f.label :customer_id, 'Customer ID'
+      = f.number_field :customer_id, class: 'form-input'
+    .mb-4
+      = f.label :total_amount, 'Total Amount'
+      = f.number_field :total_amount, step: :any, class: 'form-input'
+    .mb-4
+      = f.label :status, 'Status'
+      = f.select :status, Order.statuses.keys.map { |status| [status.humanize, status] }, class: 'form-select'
+    .mb-4
+      = f.label :voucher_id, 'Voucher ID'
+      = f.number_field :voucher_id, class: 'form-input'
+    .text-right
+      = f.submit 'Create Order', class: 'btn btn-primary'
+  = link_to 'Back to List', admin_orders_path, class: 'btn btn-secondary'

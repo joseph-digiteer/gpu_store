@@ -1,29 +1,32 @@
-/ app/views/customers/carts/show.html.slim
-
 .container.mx-auto.p-4
-  h1.text-2xl.font-semibold.mb-4 Cart Items
+  h1.text-4xl.font-bold.mb-4 My Cart
 
   - if @cart.cart_items.any?
-    .overflow-x-auto
-      table.w-full.table-auto.bg-white.shadow-md.rounded-lg
-        thead.bg-gray-100
+    table.min-w-full.bg-white.border.border-gray-200
+      thead
+        tr
+          th.py-2.px-4.border-b Product
+          th.py-2.px-4.border-b Quantity
+          th.py-2.px-4.border-b Price
+          th.py-2.px-4.border-b Total
+      tbody
+        - @cart.cart_items.each do |item|
           tr
-            th.p-3.border-b.border-gray-200.text-left Item
-            th.p-3.border-b.border-gray-200.text-left Quantity
-            th.p-3.border-b.border-gray-200.text-left Actions
+            td.py-2.px-4.border-b = item.product_variant.name
+            td.py-2.px-4.border-b = item.quantity
+            td.py-2.px-4.border-b = number_to_currency(item.product_variant.price)
+            td.py-2.px-4.border-b = number_to_currency(item.product_variant.price * item.quantity)
 
-        tbody
-          - @cart.cart_items.each do |cart_item|
-            tr
-              td.p-3.border-b.border-gray-200.text-center
-                = cart_item.product_variant.name
-              td.p-3.border-b.border-gray-200.text-center
-                = form_with url: customers_cart_item_path(cart_item), method: :put, local: true do |f|
-                    = f.number_field :quantity, value: cart_item.quantity, min: 1, class: 'border rounded p-2 w-20 text-center'
-              td.p-3.border-b.border-gray-200.text-center
-                = form_with url: customers_cart_item_path(cart_item), method: :put, local: true do |f|
-                  = f.submit 'Update', class: 'bg-blue-500 text-white p-2 rounded hover:bg-blue-600'
-                = form_with url: customers_cart_item_path(cart_item), method: :delete, local: true do |f|
-                  = f.submit 'Remove', class: 'bg-red-500 text-white p-2 rounded hover:bg-red-600'
+    .mt-4
+      = form_with url: checkout_customers_cart_path, method: :post, local: true do |f|
+        .mb-4
+          = label_tag :voucher_code, "Voucher Code (optional):"
+          = text_field_tag :voucher_code, params[:voucher_code], class: "ml-2 border rounded p-1"
+
+        .text-right
+          = submit_tag 'Proceed to Checkout', class: 'bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600'
+
   - else
-    p.text-gray-500 Your cart is empty.
+    p.text-gray-600 Your cart is empty.
+
+= link_to 'Continue Shopping', customers_products_path, class: 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mt-4'
