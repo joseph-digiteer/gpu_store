@@ -2,12 +2,16 @@ source "https://rubygems.org"
 
 ruby "3.3.2"
 
+#default views
 gem "slim-rails"
 
+# a must user authentication handler
 gem 'devise'
 
+#for search query
 gem 'ransack'
 
+#pagination pages 
 gem "pagy"
 
 gem 'font-awesome-sass', '~> 6.1.0'

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   # Admin namespace
   namespace :admin do
+  #Products -> Product variants i don't understand my 
     resources :products do
       resources :variants, only: [:edit, :update, :destroy]
       resources :product_variants, only: [:index, :show, :new, :create, :edit, :update, :destroy]
@@ -18,6 +19,7 @@ Rails.application.routes.draw do
   namespace :customers do
     resources :products, only: [:index, :show]
     resources :cart_items, only: [:create, :update, :destroy]
+    #create check POST, for check out button
     resource :cart, only: [:show, :update, :destroy] do
       post 'checkout', on: :member
     end

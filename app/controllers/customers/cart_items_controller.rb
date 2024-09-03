@@ -1,13 +1,14 @@
-# app/controllers/customers/cart_items_controller.rb
 class Customers::CartItemsController < ApplicationController
+  #run authenticate_user func 1st
   before_action :authenticate_user!
 
   def create
     @cart = current_user.cart || current_user.create_cart
-  
+    # search in product variants its ID
     product_variant = ProductVariant.find(params[:product_variant_id])
+    #then the quantity it has and update it
     quantity = params[:quantity].to_i
-  
+
     cart_item = @cart.cart_items.find_or_initialize_by(product_variant: product_variant)
   
     if cart_item.persisted?
@@ -18,12 +19,11 @@ class Customers::CartItemsController < ApplicationController
   
     # Ensure cart_item is associated with the customer
     cart_item.customer = current_user.customer
-  
+    # success if .save, else error
     if cart_item.save
       flash[:notice] = "Item added to cart."
     else
       flash[:alert] = "Unable to add item to cart."
-      Rails.logger.debug "Errors: #{cart_item.errors.full_messages.join(', ')}"
     end
   
     redirect_to customers_cart_path
