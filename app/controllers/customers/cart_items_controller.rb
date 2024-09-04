@@ -4,6 +4,7 @@ class Customers::CartItemsController < ApplicationController
 
   def create
     @cart = current_user.cart || current_user.create_cart
+    Rails.logger.info("Cart after creation: #{@cart.inspect}")
     # search in product variants its ID
     product_variant = ProductVariant.find(params[:product_variant_id])
     #then the quantity it has and update it
