@@ -1,0 +1,22 @@
+h1 Edit Cart
+
+= form_with model: @cart, url: admin_cart_path(@cart), method: :patch, local: true do |form|
+  - if @cart.cart_items.present?
+    table.min-w-full.divide-y.divide-gray-200
+      thead
+        tr
+          th Quantity
+          th Product Variant
+          th Actions
+      tbody
+        - @cart.cart_items.each do |cart_item|
+          tr
+            td
+              = form.fields_for :cart_items, cart_item do |item_form|
+                = item_form.number_field :quantity, value: cart_item.quantity, class: 'form-input'
+            td= cart_item.product_variant.name
+            td
+              = link_to 'Remove', admin_cart_cart_item_path(@cart, cart_item), method: :delete, class: 'text-red-500 hover:text-red-700'
+
+  .mt-4
+    = form.submit 'Update Cart', class: 'btn btn-primary'

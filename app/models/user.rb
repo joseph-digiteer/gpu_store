@@ -4,7 +4,6 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy  # Updated association to match the single cart per user
   enum role: { customer: 0, admin: 1 }
   
-
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable, and :omniauthable
   devise :database_authenticatable, :registerable,

@@ -9,9 +9,11 @@ Rails.application.routes.draw do
       resources :product_variants, only: [:index, :show, :new, :create, :edit, :update, :destroy]
     end
     resources :customers, only: [:index, :show, :edit, :update, :destroy]
-    resources :orders, only: [:index, :show, :edit, :update, :destroy]
+    resources :orders, only: [:index, :show, :edit, :update, :destroy, :new, :create]
     resources :order_items, only: [:index, :show, :edit, :update, :destroy]
-    resources :cart_items, only: [:index, :show, :edit, :update, :destroy]
+    resources :carts, only: [:index, :show, :edit, :update, :destroy] do
+      resources :cart_items, only: [:update, :destroy]
+    end
     resources :vouchers, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   end
 

@@ -8,9 +8,9 @@ class Admin::OrdersController < ApplicationController
   end
 
   # GET /admin/orders/1
-  def show
-  end
-
+def show
+end
+ 
   # GET /admin/orders/new
   def new
     @order = Order.new

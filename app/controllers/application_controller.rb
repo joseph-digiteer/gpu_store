@@ -1,13 +1,16 @@
 class ApplicationController < ActionController::Base
+  #before action authenticate user to know if admin or customer
   before_action :authenticate_user!
   helper_method :current_cart
 
+  #1st step auth user, check for views
   def authenticate_customer!
     if current_user.customer.nil?
       redirect_to new_user_session_path, alert: "You need to sign in as a customer to access this page."
     end
   end
 
+  #init customer = user (0) init admin = user (1)
   def current_customer
     current_user.customer if current_user
   end

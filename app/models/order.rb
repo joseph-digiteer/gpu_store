@@ -1,6 +1,7 @@
 class Order < ApplicationRecord
   belongs_to :customer
   belongs_to :voucher, optional: true
+  belongs_to :cart
   has_many :order_items, dependent: :destroy
 
   enum status: { pending: 0, completed: 1, canceled: 2 }

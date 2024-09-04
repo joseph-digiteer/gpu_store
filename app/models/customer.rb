@@ -1,9 +1,8 @@
 class Customer < ApplicationRecord
   belongs_to :user
-  has_one :user
-  has_many :cart_items
-  has_many :carts
+  has_one :cart
   has_many :orders
+  has_many :cart_items
 
   def sufficient_balance?(amount)
     self.balance >= amount

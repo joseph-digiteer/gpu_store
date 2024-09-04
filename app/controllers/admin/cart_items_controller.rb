@@ -1,6 +1,6 @@
 class Customers::CartItemsController < ApplicationController
   #run authenticate_user func 1st
-  before_action :authenticate_user!
+  before_action :authenticate_admin!
 
   def create
     @cart = current_user.cart || current_user.create_cart
@@ -63,7 +63,7 @@ class Customers::CartItemsController < ApplicationController
     params.require(:cart_item).permit(:quantity)
   end
   #check user
-  def authenticate_user!
-    redirect_to new_user_session_path unless user_signed_in?
+  def authenticate_admin!
+    redirect_to root_path, alert: 'Not authorized' unless current_user.admin?
   end
 end

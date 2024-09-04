@@ -1,9 +1,23 @@
 .container.mx-auto.p-4
   h1.text-4xl.font-bold.mb-4 Order Details
-  p.font-semibold.text-lg Order ID: = @order.id
-  p.font-semibold.text-lg Total Amount: = number_to_currency(@order.total_amount)
-  p.font-semibold.text-lg Status: = @order.status.humanize
-  p.font-semibold.text-lg Voucher: = @order.voucher_id.present? ? @order.voucher.code : 'None'
-  p.font-semibold.text-lg Customer ID: = @order.customer_id
+
+
+  p.font-semibold.text-lg 
+    | Order ID: 
+    = @order.id
+  p.font-semibold.text-lg 
+    | Total Amount: 
+    = number_to_currency(@order.total_amount)
+  p.font-semibold.text-lg 
+    | Status: 
+    = @order.status.humanize
+  p.font-semibold.text-lg 
+    | Voucher: 
+    = @order.voucher_id.present? ? @order.voucher.code : 'None'
+  p.font-semibold.text-lg 
+    | Customer ID: 
+    = @order.customer_id
+
   = link_to 'Edit', edit_admin_order_path(@order), class: 'btn btn-warning'
+  br/
   = link_to 'Back to List', admin_orders_path, class: 'btn btn-secondary'

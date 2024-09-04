@@ -1,7 +1,11 @@
-# app/controllers/customers/carts_controller.rb
 class Customers::CartsController < ApplicationController
+  #run set_cart first before any action in the lowest part / private
   before_action :set_cart
 
+  #GET Customer/carts show.html.slim
+  #@cart_items:  view to display the items in the cart.
+  #@cart.cart_items: This retrieves all CartItem records associated with the current @cart.
+  #.includes(:product_variant): This is an optimization to load associated ProductVariant records along with CartItem records. 
   def show
     @cart_items = @cart.cart_items.includes(:product_variant)
   end
@@ -18,11 +22,14 @@ class Customers::CartsController < ApplicationController
         cart_item.quantity ||= 0
         cart_item.quantity += quantity
         cart_item.save
+        #chat gpt flash similar to notice, success
         flash[:notice] = 'Item added to cart!'
       else
+        #if stock not enough
         flash[:alert] = 'Not enough stock available.'
       end
     else
+      #quantity max = stock max
       flash[:alert] = 'Invalid quantity.'
     end
 
@@ -57,7 +64,7 @@ class Customers::CartsController < ApplicationController
     order_params = {
       customer_id: customer.id,
       total_amount: total_amount,
-      status: :pending, # Ensure this is a valid status
+      status: :pending, # always pending check enum in model/order.rb
       voucher_id: voucher&.id # Set to nil if voucher is not present
     }
   
@@ -80,26 +87,25 @@ class Customers::CartsController < ApplicationController
         if product_variant.stock >= item.quantity
           product_variant.update(stock: product_variant.stock - item.quantity)
         else
-          # Handle insufficient stock, possibly rollback
-          # Here, you might want to add a mechanism to handle stock discrepancies
+          #check stock 
           redirect_to customers_cart_path, alert: 'Insufficient stock for one or more items.'
           return
         end
       end
   
       @cart.cart_items.destroy_all
-  
-      # Redirect or render success message
+      
+      # success message if order is created
       redirect_to customers_order_path(@order), notice: 'Order successfully created.'
     else
-      # Handle the error case
+      # error check  def checkout
       render :show, alert: 'There was an issue with your checkout.'
     end
   end
   
 
   private
-
+  #always set cart to the current_user.cart (for testing customer side.)
   def set_cart
     @cart = current_user.cart 
   end

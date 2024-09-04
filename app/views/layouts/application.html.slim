@@ -7,37 +7,40 @@ html
     = javascript_importmap_tags
     = stylesheet_link_tag "tailwind", "inter-font", data: { turbo_track: "reload" }
     = stylesheet_link_tag 'application', data: { turbo_track: "reload" }
-
     link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
-    //comment line 13 
     = javascript_include_tag 'application', data: { turbo_track: "reload" }, type: "module"
 
   body.font-sans.bg-gray-100
     nav.bg-gray-800.p-4
       .container.mx-auto.flex.justify-between.items-center
         = link_to 'GPU Store', root_path, class: 'text-white text-lg font-bold'
-        
+
         .flex-grow
           .ml-auto.flex.items-center
-            - if user_signed_in? && current_user.admin?
-              = link_to 'Products', admin_products_path, class: 'text-white px-4 hover:underline'
-              = link_to 'Orders', admin_orders_path, class: 'text-white px-4 hover:underline'
-            - elsif user_signed_in?
-              = link_to 'Products', customers_products_path, class: 'text-white px-4 hover:underline'
-              = link_to 'Orders', customers_orders_path, class: 'text-white px-4 hover:underline'
-            
             - if user_signed_in?
-              = link_to customers_cart_path, class: 'relative text-white px-4 hover:underline' do
-                i.fa.fa-shopping-cart
-                - if cart_items_count > 0
-                  span.badge = cart_items_count
+              - if current_user.admin?
+                = link_to 'Products', admin_products_path, class: 'text-white px-4 hover:underline'
+                = link_to 'Orders', admin_orders_path, class: 'text-white px-4 hover:underline'
+                = link_to 'Carts', admin_carts_path, class: 'text-white px-4 hover:underline'
+              - else
+                = link_to 'Products', customers_products_path, class: 'text-white px-4 hover:underline'
+                = link_to 'Orders', customers_orders_path, class: 'text-white px-4 hover:underline'
+                = link_to customers_cart_path, class: 'relative text-white px-4 hover:underline' do
+                  i.fa.fa-shopping-cart
+                  - if current_user.cart.present?
+                    - cart_items_count = current_user.cart.cart_items.count
+                    - if cart_items_count > 0
+                      span.badge = cart_items_count
 
         - if user_signed_in?
           .ml-auto.flex.items-center
             span.text-white.px-4
-              | Email: #{current_user.email} 
-              span.mr-2
+              | Email: #{current_user.email}
+            span.text-white.px-4
               | Role: #{current_user.role}
+            - if current_user.customer.present?
+              span.text-white.px-4
+                | Balance: #{current_user.customer.balance}
             = button_to 'Logout', destroy_user_session_path, method: :delete, class: 'text-white hover:underline'
         - else
           .ml-auto.flex.items-center
