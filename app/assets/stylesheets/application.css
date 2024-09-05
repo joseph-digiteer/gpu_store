@@ -13,6 +13,9 @@
  *= require_tree .
  *= require_self
  */
+ .hidden {
+  display: none;
+}
 
  .badge {
     background-color: red;

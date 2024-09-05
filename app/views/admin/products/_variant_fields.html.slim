@@ -1,0 +1,22 @@
+.nested-fields
+  .field
+    = form.label :name, "Variant Name"
+    = form.text_field :name
+
+  .field
+    = form.label :description, "Variant Description"
+    = form.text_area :description
+
+  .field
+    = form.label :price, "Variant Price"
+    = form.text_field :price
+
+  .field
+    = form.label :stock, "Variant Stock"
+    = form.text_field :stock
+
+  .field
+    = form.label :active
+    = form.check_box :active
+
+  = link_to "Remove Variant", '#', class: "remove_fields btn btn-danger"

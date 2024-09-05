@@ -7,38 +7,47 @@
           li= message
 
   .field
-    = form.label :name, "Series Name"
-    = form.text_field :name
+    = form.label :existing_series, "Select Existing Series (or choose to create a new one)"
+    = form.select :existing_series, options_for_select([["Create New Series", ""]] + (@existing_products.present? ? @existing_products.map { |p| [p.name, p.id] } : [])), include_blank: true, onchange: "toggleSeriesFields(this.value)"
 
-  .field
-    = form.label :description, "Series Description"
-    = form.text_area :description
-
-  .field
-    = form.label :active
-    = form.check_box :active
+  - if @product.new_record? || form.object.id.blank?
+    .new-series-fields
+      .field
+        = form.label :name, "Series Name"
+        = form.text_field :name
+      .field
+        = form.label :description, "Series Description"
+        = form.text_area :description
+      .field
+        = form.label :active
+        = form.check_box :active
 
   h3 Product Variants
+  #variants
   = form.fields_for :product_variants do |variant_form|
-    .field
-      = variant_form.label :name, "Variant Name"
-      = variant_form.text_field :name, value: variant_form.object.name
+    .nested-fields
+      .field
+        = variant_form.label :name, "Variant Name"
+        = variant_form.text_field :name
 
-    .field
-      = variant_form.label :description, "Variant Description"
-      = variant_form.text_area :description, value: variant_form.object.description
+      .field
+        = variant_form.label :description, "Variant Description"
+        = variant_form.text_area :description
 
-    .field
-      = variant_form.label :price, "Variant Price"
-      = variant_form.text_field :price, value: variant_form.object.price
+      .field
+        = variant_form.label :price, "Variant Price"
+        = variant_form.text_field :price
 
-    .field
-      = variant_form.label :stock, "Variant Stock"
-      = variant_form.text_field :stock, value: variant_form.object.stock
+      .field
+        = variant_form.label :stock, "Variant Stock"
+        = variant_form.text_field :stock
 
-    .field
-      = variant_form.label :active
-      = variant_form.check_box :active, checked: variant_form.object.active
+      .field
+        = variant_form.label :active
+        = variant_form.check_box :active
+
+      = link_to 'Remove Variant', '#', class: 'remove_variant btn btn-danger'
 
   .actions
+    = link_to 'Add Another Variant', '#', id: 'add_variant', class: 'btn btn-primary'
     = form.submit 'Create Product Series'

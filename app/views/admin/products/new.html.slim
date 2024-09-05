@@ -1,6 +1,6 @@
 h1.text-4xl.font-bold.mb-4.text-gray-800 Create New Product
 
 = turbo_frame_tag "new_product_form" do
-  = render 'form', product: @product
+  = render 'form', product: @product, existing_products: @existing_products
 
 = link_to 'Back to Products', admin_products_path, class: 'btn btn-secondary'
