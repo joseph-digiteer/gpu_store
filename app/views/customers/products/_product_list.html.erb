@@ -7,7 +7,7 @@
   <tbody>
     <% products.each do |product| %>
       <tr>
-        <td><%= link_to product.name, customers_product_path(product) %></td>
+        <td><%= link_to product.name, customers_product_path(product), data: { turbo: false } %></td>
       </tr>
     <% end %>
   </tbody>
